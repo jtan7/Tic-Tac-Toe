@@ -1,13 +1,11 @@
 package com.example.tictactoe;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
@@ -18,12 +16,6 @@ public class MainActivity extends AppCompatActivity {
     static String GAME_STATUS = "Game in progress";
     static String[] BUTTONS_STR = {"0", "1", "2", "3", "4", "5", "6", "7", "8"};
     static String USER_TURN = "true";
-
-    private Set<Button> unselected_buttons;
-    private Button[] buttons;
-    private Random rand = new Random();
-    private boolean userTurn;
-
     Button b;
     Button b2;
     Button b3;
@@ -34,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     Button b8;
     Button b9;
     TextView status;
+    private Set<Button> unselected_buttons;
+    private Button[] buttons;
+    private Random rand = new Random();
+    private boolean userTurn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         buttons = new Button[] {b, b2, b3, b4, b5, b6, b7, b8, b9};
 
         if (savedInstanceState == null) {
-            unselected_buttons = new HashSet<Button>(Arrays.asList(b, b2, b3, b4, b5, b6, b7, b8, b9));
+            unselected_buttons = new HashSet<>(Arrays.asList(b, b2, b3, b4, b5, b6, b7, b8, b9));
 
             int randomNum = rand.nextInt(2);
             if (randomNum > 0) {
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
             userTurn = true;
         } else {
-            unselected_buttons = new HashSet<Button>();
+            unselected_buttons = new HashSet<>();
         }
     }
 
@@ -76,20 +72,16 @@ public class MainActivity extends AppCompatActivity {
         userTurn = savedInstanceState.getBoolean(USER_TURN);
 
 
-        Log.d("GAME_STATUS", GAME_STATUS);
         for (int i = 0; i < 9; i++) {
-            Log.d("i", Integer.toString(i));
             buttons[i].setText(savedInstanceState.getString(BUTTONS_STR[i]));
-            if (savedInstanceState.getString(BUTTONS_STR[i]).equals("X") ||
-                    savedInstanceState.getString(BUTTONS_STR[i]).equals("O") ||
+            if ((savedInstanceState.getString(BUTTONS_STR[i]) != null &&
+                    !savedInstanceState.getString(BUTTONS_STR[i]).equals("")) ||
                     !status.getText().toString().equals("Game in progress")) {
-                Log.d("set clickable to false", Integer.toString(i));
                 buttons[i].setClickable(false);
             }
             if (savedInstanceState.getString(BUTTONS_STR[i]) == null) {
                 unselected_buttons.add(buttons[i]);
             }
-            Log.d("buttons[i]", buttons[i].getText().toString());
         }
 
         if (!userTurn) {
@@ -105,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putBoolean(USER_TURN, userTurn);
         for (int i = 0; i < 9; i++) {
             String button_str = buttons[i].getText().toString();
-            Log.d("i", Integer.toString(i));
-            Log.d("button_str", button_str);
             savedInstanceState.putString(BUTTONS_STR[i], button_str);
         }
 
@@ -216,41 +206,47 @@ public class MainActivity extends AppCompatActivity {
             if ((buttons[1].getText().equals("O") && buttons[2].getText().equals("O")) ||
                     (buttons[3].getText().equals("O") && buttons[6].getText().equals("O")) ||
                     (buttons[4].getText().equals("O") && buttons[8].getText().equals("O"))) {
-                status.setText("Computer wins");
+                status.setText(R.string.computer_wins);
             }
         } else if (buttons[0].getText().equals("X")) {
             if ((buttons[1].getText().equals("X") && buttons[2].getText().equals("X")) ||
                     (buttons[3].getText().equals("X") && buttons[6].getText().equals("X")) ||
                     (buttons[4].getText().equals("X") && buttons[8].getText().equals("X"))) {
-                status.setText("User wins");
+                status.setText(R.string.user_wins);
             }
-        } else if (buttons[6].getText().equals("O")) {
+        }
+
+        if (buttons[6].getText().equals("O")) {
             if (buttons[4].getText().equals("O") && buttons[2].getText().equals("O")) {
-                status.setText("Computer wins");
+                status.setText(R.string.computer_wins);
             }
         } else if (buttons[6].getText().equals("X")) {
             if (buttons[4].getText().equals("X") && buttons[2].getText().equals("X")) {
-                status.setText("User wins");
+                status.setText(R.string.user_wins);
             }
-        } else if (buttons[8].getText().equals("O")) {
+        }
+
+        if (buttons[8].getText().equals("O")) {
             if ((buttons[6].getText().equals("O") && buttons[7].getText().equals("O")) ||
                     (buttons[2].getText().equals("O") && buttons[5].getText().equals("O"))) {
-                status.setText("Computer wins");
+                status.setText(R.string.computer_wins);
             }
         } else if (buttons[8].getText().equals("X")) {
             if ((buttons[6].getText().equals("X") && buttons[7].getText().equals("X")) ||
                     (buttons[2].getText().equals("X") && buttons[5].getText().equals("X"))) {
-                status.setText("User wins");
+                status.setText(R.string.user_wins);
             }
-        } else if (buttons[4].getText().equals("O")) {
+        }
+
+        if (buttons[4].getText().equals("O")) {
             if ((buttons[1].getText().equals("O") && buttons[7].getText().equals("O")) ||
                     (buttons[3].getText().equals("O") && buttons[5].getText().equals("O"))) {
-                status.setText("Computer wins");
+                status.setText(R.string.computer_wins);
             }
         } else if (buttons[4].getText() == "X") {
-            if ((buttons[1].getText() .equals("X") && buttons[7].getText().equals("X")) ||
+            if ((buttons[1].getText().equals("X") && buttons[7].getText().equals("X")) ||
                     (buttons[3].getText().equals("X") && buttons[5].getText().equals("X"))) {
-                status.setText("User wins");
+                status.setText(R.string.user_wins);
             }
         }
 
@@ -259,8 +255,10 @@ public class MainActivity extends AppCompatActivity {
                 button.setClickable(false);
             }
             return true;
-        } else if (unselected_buttons.size() == 0) {
-            status.setText("Game Over");
+        }
+
+        if (unselected_buttons.size() == 0) {
+            status.setText(R.string.game_over);
             return true;
         }
         return false;
@@ -272,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             buttons[i].setText("");
             unselected_buttons.add(buttons[i]);
         }
-        status.setText("Game in progress");
+        status.setText(R.string.game_in_progress);
 
         int randomNum = rand.nextInt(2);
         if (randomNum > 0) {

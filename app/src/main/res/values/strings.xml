@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Tic Tac Toe</string>
+    <string name="computer_wins">Computer wins</string>
+    <string name="user_wins">User wins</string>
+    <string name="game_over">Game over</string>
+    <string name="game_in_progress">Game in progress</string>
 </resources>
